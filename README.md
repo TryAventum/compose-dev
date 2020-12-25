@@ -8,4 +8,4 @@ Inside `server` folder create `src` folder and put [Aventum Server](https://gith
 
 > Use `docker-compose -f docker-compose.postgres.yml up` to use PostgreSQL or use `docker-compose -f docker-compose.mongodb.yml up` to use MongoDB if you want to rebuild add `--build` to the end of the command like `docker-compose -f docker-compose.postgres.yml up --build`, the app will be accessed through http://localhost:3333
 
-> **THE FIRST PAGE TO VISIT AFTER docker-compose up IS COMPLETED IS http://localhost:3333/setup IN ORDER OR SETUP THE SUPER USER!**
+> **THE FIRST PAGE TO VISIT AFTER docker-compose up IS COMPLETED IS http://localhost:3333/setup IN ORDER TO SETUP THE SUPER USER!**
