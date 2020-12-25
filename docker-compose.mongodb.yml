@@ -1,0 +1,63 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:4.4.1
+    expose:
+      - '27017'
+    volumes:
+      - mongo-db-data:/data/db
+    ports:
+      - '27017:27017'
+  redis:
+    image: 'redis:6.0.9'
+  api:
+    expose:
+      - '3030'
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+      target: debug
+    depends_on:
+      - mongo
+      - redis
+    volumes:
+      - /app/node_modules
+      - ./server/src:/app
+    environment:
+      - PORT=3030
+      - DB_TYPE=mongodb
+      - DB_NAME=aventum
+      - DB_HOST=mongo
+      - DB_PORT=27017
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+      - REDIS_PASSWORD=
+      - REDIS_FAMILY=4
+      - SHOW_ERRORS=false
+      - APP_URI=http://localhost:3030
+      - UPLOADS_PUBLIC_URL=http://localhost:3030
+    ports:
+      - '3030:3030'
+      - '9229:9229'
+  dashboard:
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    build:
+      dockerfile: Dockerfile
+      context: ./dashboard
+      args:
+        - REACT_APP_BASE_URL=http://localhost:3030/
+    depends_on:
+      - api
+    volumes:
+      - /app/node_modules
+      - ./dashboard/src:/app
+    expose:
+      - '3333'
+    ports:
+      - '3333:3333'
+
+volumes:
+  mongo-db-data:
